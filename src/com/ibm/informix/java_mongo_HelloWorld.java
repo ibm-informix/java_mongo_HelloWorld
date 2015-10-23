@@ -37,10 +37,6 @@ import com.mongodb.MongoException;
 public class java_mongo_HelloWorld {
 	public static String MONGOURL;
 	public static String databaseName;
-	public static String host;
-	public static String username;
-	public static String password;
-	public static String port;
 	public static final String collectionName = "javaTest";
 	public static final DataFormat user1 = new DataFormat("test1", 1);
 	public static final DataFormat user2 = new DataFormat("test2", 2);
@@ -205,53 +201,22 @@ public class java_mongo_HelloWorld {
 	
 	public static void parseVcap() {
 		
+		String serviceName = "timeseriesdatabase";
 		StringReader stringReader = new StringReader(System.getenv("VCAP_SERVICES"));
 		JsonReader jsonReader = Json.createReader(stringReader);
 		JsonObject vcap = jsonReader.readObject();
-		JsonObject credentials = vcap.getJsonArray("altadb-dev").getJsonObject(0).getJsonObject("credentials");
+		JsonObject credentials = vcap.getJsonArray(serviceName).getJsonObject(0).getJsonObject("credentials");
 		
 		databaseName = credentials.getString("db");
-		host = credentials.getString("host");
-		username = credentials.getString("username");
-		password = credentials.getString("password");
 		boolean ssl = false;
 		if (ssl) {
-			MONGOURL = credentials.getString("ssl_json_url");
-			port = credentials.getString("ssl_json_port");
+			MONGOURL = credentials.getString("mongodb_url_ssl");
 		} else {
-			MONGOURL = credentials.getString("json_url");
-			port = credentials.getString("json_port");
+			MONGOURL = credentials.getString("mongodb_url");
 		}
 		
 		System.out.println("URL -> " + MONGOURL);
 		System.out.println("DB -> " + databaseName);
-		System.out.println("host -> " + host);
-		System.out.println("username -> " + username);
-		System.out.println("password -> " + password);
-		System.out.println("port -> " + port);
-
-//		StringReader stringReader = new StringReader(
-//				System.getenv("VCAP_SERVICES"));
-//		JsonReader jsonReader = Json.createReader(stringReader);
-//		JsonObject vcap = jsonReader.readObject();
-//		System.out.println("vcap: " + vcap);
-//		boolean ssl = true;
-//		
-//		if (ssl) {
-//			MONGOURL = vcap.getJsonArray("altadb-dev").getJsonObject(0)
-//					.getJsonObject("credentials").getString("ssl_json_url");
-//			databaseName = vcap.getJsonArray("altadb-dev").getJsonObject(0)
-//				.getJsonObject("credentials").getString("db");
-//		}
-//		else {
-//			MONGOURL = vcap.getJsonArray("altadb-dev").getJsonObject(0)
-//					.getJsonObject("credentials").getString("json_url");
-//			databaseName = vcap.getJsonArray("altadb-dev").getJsonObject(0)
-//					.getJsonObject("credentials").getString("db");
-//			System.out.println(MONGOURL);
-//		}
-			
-
 	}
 
 }
