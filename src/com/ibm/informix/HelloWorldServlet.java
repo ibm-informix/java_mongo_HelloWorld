@@ -30,8 +30,8 @@ public class HelloWorldServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
 		java_mongo_HelloWorld.doEverything();
-		for (String command : java_mongo_HelloWorld.commands) {
-			out.print(command + "\n");
+		for (String line : java_mongo_HelloWorld.output) {
+			out.print(line + "\n");
 		}
 	}
 
